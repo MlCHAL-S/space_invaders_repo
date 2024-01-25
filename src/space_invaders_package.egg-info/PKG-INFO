@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: space_invaders_package
+Version: 0.1
+Summary: Final project
+Author-email: Michal Szynkaruk <m.szynkaruk@student.uksw.edu.pl>
+Project-URL: Homepage, https://github.com/MlCHAL-S/Space_invaders
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+This is a simple example package. You can use
+[GitHub-flavored Markdown](https://github.com/MlCHAL-S/Space_invaders)
+to write your content.

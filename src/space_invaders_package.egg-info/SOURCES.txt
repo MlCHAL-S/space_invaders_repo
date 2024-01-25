@@ -1,0 +1,14 @@
+LICENSE
+README.md
+pyproject.toml
+src/space_invaders_package/__init__.py
+src/space_invaders_package/main.py
+src/space_invaders_package.egg-info/PKG-INFO
+src/space_invaders_package.egg-info/SOURCES.txt
+src/space_invaders_package.egg-info/dependency_links.txt
+src/space_invaders_package.egg-info/top_level.txt
+src/space_invaders_package/docs/conf.py
+src/space_invaders_package/source/__init__.py
+src/space_invaders_package/source/classes.py
+src/space_invaders_package/source/constants.py
+tests/test.py

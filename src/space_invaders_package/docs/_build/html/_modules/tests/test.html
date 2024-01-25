@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.test &mdash; Space Invaders 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Space Invaders
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">SpaceInvaders</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Space Invaders</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.test</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.test</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Unit Tests for Space Invaders Game Classes</span>
+
+<span class="sd">This file contains a series of unit tests for the various classes used in the Space Invaders game.</span>
+<span class="sd">These tests ensure that each class is correctly initialized and performs its intended functions.</span>
+
+<span class="sd">The following classes are tested in this file:</span>
+<span class="sd">- Spaceship: Tests its initialization and attributes.</span>
+<span class="sd">- Bullet: Tests its initialization and attributes.</span>
+<span class="sd">- Alien: Tests its initialization and attributes.</span>
+<span class="sd">- AlienBullet: Tests its initialization and attributes.</span>
+<span class="sd">- Explosion: Tests its initialization and attributes.</span>
+<span class="sd">- SpaceInvadersGame: Tests the game initialization and attributes.</span>
+
+<span class="sd">Each test case within this file focuses on specific aspects of these classes, including attribute initialization,</span>
+<span class="sd">functional behavior, and correctness.</span>
+
+<span class="sd">Note: These tests do not include docstrings within the individual class definitions, as requested.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">source</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">source</span> <span class="kn">import</span> <span class="n">SpaceInvadersGame</span><span class="p">,</span> <span class="n">Spaceship</span><span class="p">,</span> <span class="n">Explosion</span><span class="p">,</span> <span class="n">Alien</span><span class="p">,</span> <span class="n">AlienBullet</span><span class="p">,</span> <span class="n">Bullet</span>
+
+
+<div class="viewcode-block" id="TestSpaceship"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceship">[docs]</a><span class="k">class</span> <span class="nc">TestSpaceship</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestSpaceship.setUp"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceship.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestSpaceship.test_initialization"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceship.test_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">test_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+        <span class="n">bullet_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="n">alien_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="n">explosion_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+
+        <span class="c1"># Create an instance of the Spaceship class</span>
+        <span class="n">spaceship</span> <span class="o">=</span> <span class="n">Spaceship</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                              <span class="n">bullet_group</span><span class="p">,</span> <span class="n">alien_group</span><span class="p">,</span> <span class="n">explosion_group</span><span class="p">)</span>
+
+        <span class="c1"># Check if attributes are initialized correctly</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">health_remaining</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">health_start</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">PLAYER_START_HEALTH</span><span class="p">)</span>
+        <span class="c1"># Add more assertions based on your class attributes</span>
+
+        <span class="c1"># Check if pygame.sprite.Sprite.__init__ is called</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">spaceship</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">))</span>
+
+        <span class="c1"># Check if the image and rect attributes are initialized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">rect</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">)</span>
+
+        <span class="c1"># Check if the last_shot attribute is initialized to the current time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">last_shot</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">())</span>
+
+        <span class="c1"># Check if other attributes are initialized correctly</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="n">screen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">bullet_group</span><span class="p">,</span> <span class="n">bullet_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">alien_group</span><span class="p">,</span> <span class="n">alien_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">spaceship</span><span class="o">.</span><span class="n">explosion_group</span><span class="p">,</span> <span class="n">explosion_group</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestSpaceship.tertDown"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceship.tertDown">[docs]</a>    <span class="k">def</span> <span class="nf">tertDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="TestBullet"><a class="viewcode-back" href="../../tests.html#tests.test.TestBullet">[docs]</a><span class="k">class</span> <span class="nc">TestBullet</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestBullet.setUp"><a class="viewcode-back" href="../../tests.html#tests.test.TestBullet.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Set up any necessary resources or dependencies for the tests.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestBullet.tearDown"><a class="viewcode-back" href="../../tests.html#tests.test.TestBullet.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Clean up any resources used during testing.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestBullet.test_initialization"><a class="viewcode-back" href="../../tests.html#tests.test.TestBullet.test_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">test_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create test data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">alien_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="n">explosion_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+
+        <span class="c1"># Initialize the bullet</span>
+        <span class="n">bullet</span> <span class="o">=</span> <span class="n">Bullet</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alien_group</span><span class="p">,</span> <span class="n">explosion_group</span><span class="p">)</span>
+
+        <span class="c1"># Perform assertions to check if the initialization is correct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">bullet</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">bullet</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">bullet</span><span class="o">.</span><span class="n">alien_group</span><span class="p">,</span> <span class="n">alien_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">bullet</span><span class="o">.</span><span class="n">explosion_group</span><span class="p">,</span> <span class="n">explosion_group</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestAlien"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlien">[docs]</a><span class="k">class</span> <span class="nc">TestAlien</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestAlien.setUp"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlien.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Set up any necessary resources or dependencies for the tests.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestAlien.tearDown"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlien.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Clean up any resources used during testing.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestAlien.test_initialization"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlien.test_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">test_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create test data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">200</span>
+
+        <span class="c1"># Initialize the alien</span>
+        <span class="n">alien</span> <span class="o">=</span> <span class="n">Alien</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># Perform assertions to check if the initialization is correct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">alien</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">alien</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">alien</span><span class="o">.</span><span class="n">move_counter</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">alien</span><span class="o">.</span><span class="n">move_direction</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestAlienBullet"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlienBullet">[docs]</a><span class="k">class</span> <span class="nc">TestAlienBullet</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestAlienBullet.setUp"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlienBullet.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Set up any necessary resources or dependencies for the tests.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestAlienBullet.tearDown"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlienBullet.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Clean up any resources used during testing.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestAlienBullet.test_initialization"><a class="viewcode-back" href="../../tests.html#tests.test.TestAlienBullet.test_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">test_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create test data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">spaceship_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="n">explosion_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+
+        <span class="c1"># Initialize the alien bullet</span>
+        <span class="n">alien_bullet</span> <span class="o">=</span> <span class="n">AlienBullet</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">spaceship_group</span><span class="p">,</span> <span class="n">explosion_group</span><span class="p">)</span>
+
+        <span class="c1"># Perform assertions to check if the initialization is correct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">alien_bullet</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">alien_bullet</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">alien_bullet</span><span class="o">.</span><span class="n">spaceship_group</span><span class="p">,</span> <span class="n">spaceship_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">alien_bullet</span><span class="o">.</span><span class="n">explosion_group</span><span class="p">,</span> <span class="n">explosion_group</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestExplosion"><a class="viewcode-back" href="../../tests.html#tests.test.TestExplosion">[docs]</a><span class="k">class</span> <span class="nc">TestExplosion</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExplosion.setUp"><a class="viewcode-back" href="../../tests.html#tests.test.TestExplosion.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Set up any necessary resources or dependencies for the tests.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestExplosion.tearDown"><a class="viewcode-back" href="../../tests.html#tests.test.TestExplosion.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Clean up any resources used during testing.</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestExplosion.test_init"><a class="viewcode-back" href="../../tests.html#tests.test.TestExplosion.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create a MagicMock for pygame.sprite.Sprite to avoid actual initialization</span>
+        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Set up inputs for the constructor</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">50</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="mi">60</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">2</span>
+
+            <span class="c1"># Create an instance of your class</span>
+            <span class="n">explosion</span> <span class="o">=</span> <span class="n">Explosion</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+            <span class="c1"># Assertions for the initialization</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">explosion</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">explosion</span><span class="o">.</span><span class="n">counter</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># Check if the images list is not empty</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">explosion</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
+
+            <span class="c1"># Check if the image dimensions are correctly scaled based on the size parameter</span>
+            <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">explosion</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">get_size</span><span class="p">(),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">get_size</span><span class="p">(),</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">get_size</span><span class="p">(),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+            <span class="c1"># Check if the rect center is set correctly</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">explosion</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="TestSpaceInvadersGame"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceInvadersGame">[docs]</a><span class="k">class</span> <span class="nc">TestSpaceInvadersGame</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TestSpaceInvadersGame.setUp"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceInvadersGame.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestSpaceInvadersGame.tearDown"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceInvadersGame.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestSpaceInvadersGame.test_initialization"><a class="viewcode-back" href="../../tests.html#tests.test.TestSpaceInvadersGame.test_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">test_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">game_instance</span> <span class="o">=</span> <span class="n">SpaceInvadersGame</span><span class="p">()</span>
+
+        <span class="c1"># Test that the necessary attributes are initialized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">(),</span>
+                         <span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_caption</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;Space Invaders&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">clock</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">countdown</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">last_count</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">last_alien_shot</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">game_over</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">end_timer</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Test sprite groups</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">spaceship_group</span><span class="p">,</span>
+                              <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">GroupSingle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">bullet_group</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">alien_group</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span>
+            <span class="n">game_instance</span><span class="o">.</span><span class="n">alien_bullet_group</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span>
+            <span class="n">game_instance</span><span class="o">.</span><span class="n">explosion_group</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span>
+
+        <span class="c1"># Test player creation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">spaceship</span><span class="p">,</span> <span class="n">Spaceship</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">spaceship</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                         <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">spaceship</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                         <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">game_instance</span><span class="o">.</span><span class="n">spaceship</span><span class="o">.</span><span class="n">health_start</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Muchal Szynkaruk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

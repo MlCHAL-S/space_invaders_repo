@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>source.classes &mdash; Space Invaders 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Space Invaders
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">SpaceInvaders</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Space Invaders</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">source.classes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for source.classes</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Space Invaders Game Implementation using Pygame</span>
+
+<span class="sd">This script is an implementation of the classic arcade game &#39;Space Invaders&#39; using the Pygame library. The game features a spaceship controlled by the player, whose objective is to defeat waves of incoming alien enemies by shooting them while avoiding their attacks. The game ends when the player either destroys all aliens or loses all health from alien attacks.</span>
+
+<span class="sd">Key Features:</span>
+<span class="sd">- Player-controlled spaceship with movement and shooting capabilities.</span>
+<span class="sd">- Alien enemies with simple AI for movement and attacking the player.</span>
+<span class="sd">- Collision detection for bullets impacting aliens and the player&#39;s spaceship.</span>
+<span class="sd">- Explosions animations for visual feedback upon destruction of aliens or the player&#39;s spaceship.</span>
+<span class="sd">- Countdown before the game starts and display messages for game over conditions.</span>
+<span class="sd">- Background music and sound effects for a more immersive gaming experience.</span>
+
+<span class="sd">Classes:</span>
+<span class="sd">- Spaceship: Manages the player&#39;s spaceship, including its movement, shooting, and health.</span>
+<span class="sd">- Bullet: Handles the bullets fired by the spaceship, their movement, and collision with aliens.</span>
+<span class="sd">- Alien: Represents the alien enemies with their own movement patterns and shooting behavior.</span>
+<span class="sd">- AlienBullet: Similar to Bullet, but represents bullets fired by aliens.</span>
+<span class="sd">- Explosion: Manages explosion animations triggered by collisions.</span>
+<span class="sd">- SpaceInvadersGame: The main game class that initializes the game, manages game states, and contains the main game loop.</span>
+
+<span class="sd">This script exemplifies object-oriented programming in Python and demonstrates the use of the Pygame library for 2D game development.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">Player can control the spaceship using keyboard inputs and aim to destroy all alien enemies.</span>
+
+<span class="sd">Dependencies:</span>
+<span class="sd">- pygame: A popular Python library for writing video games.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">mixer</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">mixer</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Spaceship"><a class="viewcode-back" href="../../source.html#source.classes.Spaceship">[docs]</a><span class="k">class</span> <span class="nc">Spaceship</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a spaceship in the Space Invaders game.</span>
+
+<span class="sd">    This class manages the behavior and parameters of the player&#39;s spaceship, </span>
+<span class="sd">    including movement, shooting, health management, and collision detection.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    image : pygame.Surface</span>
+<span class="sd">        The image of the spaceship.</span>
+<span class="sd">    rect : pygame.Rect</span>
+<span class="sd">        The rectangular bounding box of the spaceship.</span>
+<span class="sd">    health_start : int</span>
+<span class="sd">        The initial health of the spaceship.</span>
+<span class="sd">    health_remaining : int</span>
+<span class="sd">        The current health of the spaceship.</span>
+<span class="sd">    last_shot : int</span>
+<span class="sd">        The timestamp of the last shot fired from the spaceship.</span>
+<span class="sd">    screen : pygame.Surface</span>
+<span class="sd">        The game screen surface.</span>
+<span class="sd">    bullet_group : pygame.sprite.Group</span>
+<span class="sd">        Group containing bullets.</span>
+<span class="sd">    alien_group : pygame.sprite.Group</span>
+<span class="sd">        Group containing aliens.</span>
+<span class="sd">    explosion_group : pygame.sprite.Group</span>
+<span class="sd">        Group containing explosions.</span>
+<span class="sd">    explosion_created : bool</span>
+<span class="sd">        Flag indicating if an explosion has been created.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">    --------</span>
+<span class="sd">    __init__(self, x, y, health, screen, bullet_group, alien_group, explosion_group)</span>
+<span class="sd">        Initialize the spaceship with position, health, and related groups.</span>
+<span class="sd">    _move(self)</span>
+<span class="sd">        Move the spaceship based on user input.</span>
+<span class="sd">    _shoot(self)</span>
+<span class="sd">        Shoot a bullet from the spaceship and handle the explosion animation.</span>
+<span class="sd">    _play_sound(self, sound)</span>
+<span class="sd">        Play a sound effect.</span>
+<span class="sd">    _update_mask(self)</span>
+<span class="sd">        Update the mask for collision detection.</span>
+<span class="sd">    _update_health_bar(self)</span>
+<span class="sd">        Update the health bar of the spaceship.</span>
+<span class="sd">    update(self)</span>
+<span class="sd">        Update the spaceship&#39;s position, shooting, mask, health, and health bar.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">health</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">screen</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">,</span>
+        <span class="n">bullet_group</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
+        <span class="n">alien_group</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
+        <span class="n">explosion_group</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the spaceship.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): The x-coordinate of the spaceship&#39;s initial position.</span>
+<span class="sd">            y (int): The y-coordinate of the spaceship&#39;s initial position.</span>
+<span class="sd">            health (int): The initial health of the spaceship.</span>
+<span class="sd">            screen (pygame.Surface): The game screen surface.</span>
+<span class="sd">            bullet_group (pygame.sprite.Group): Group containing bullets.</span>
+<span class="sd">            alien_group (pygame.sprite.Group): Group containing aliens.</span>
+<span class="sd">            explosion_group (pygame.sprite.Group): Group containing explosions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;player_sprites&#39;</span><span class="p">,</span> <span class="s1">&#39;spaceship.png&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">health_start</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">PLAYER_START_HEALTH</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">health_remaining</span> <span class="o">=</span> <span class="n">health</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_shot</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bullet_group</span> <span class="o">=</span> <span class="n">bullet_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span> <span class="o">=</span> <span class="n">alien_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span> <span class="o">=</span> <span class="n">explosion_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion_created</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_move</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move the spaceship based on user input.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LEFT</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">-=</span> <span class="n">constants</span><span class="o">.</span><span class="n">PLAYER_SPEED</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_RIGHT</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">right</span> <span class="o">&lt;</span> <span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">constants</span><span class="o">.</span><span class="n">PLAYER_SPEED</span>
+
+    <span class="k">def</span> <span class="nf">_shoot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shoot a bullet from the spaceship and handle the explosion animation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>
+        <span class="n">time_now</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_SPACE</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">time_now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_shot</span> <span class="o">&gt;</span> <span class="n">constants</span><span class="o">.</span><span class="n">PLAYER_COOLDOWN</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">health_remaining</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">bullet</span> <span class="o">=</span> <span class="n">Bullet</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centerx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="s1">&#39;sounds/player_shot.wav&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bullet_group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bullet</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_shot</span> <span class="o">=</span> <span class="n">time_now</span>
+
+    <span class="k">def</span> <span class="nf">_play_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sound</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Play a sound effect.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sound (str): The path to the sound file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">sound_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="n">sound</span><span class="p">)</span>
+
+        <span class="n">sound</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Sound</span><span class="p">(</span><span class="n">sound_path</span><span class="p">)</span>
+        <span class="n">sound</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">sound</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_update_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the mask for collision detection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">from_surface</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_health_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the health bar of the spaceship.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">health_remaining</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span>
+                <span class="n">constants</span><span class="o">.</span><span class="n">RED</span><span class="p">,</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">bottom</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span>
+                <span class="n">constants</span><span class="o">.</span><span class="n">GREEN</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">bottom</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">health_remaining</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">health_start</span><span class="p">)),</span>
+                    <span class="mi">15</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">health_remaining</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Create an explosion at the center of the spaceship only once</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">explosion_created</span><span class="p">:</span>
+                <span class="n">explosion</span> <span class="o">=</span> <span class="n">Explosion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centerx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centery</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">explosion</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">explosion_created</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Spaceship.update"><a class="viewcode-back" href="../../source.html#source.classes.Spaceship.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the spaceship&#39;s position, shooting, mask, health, and health bar.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shoot</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_mask</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_health_bar</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="Bullet"><a class="viewcode-back" href="../../source.html#source.classes.Bullet">[docs]</a><span class="k">class</span> <span class="nc">Bullet</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a bullet fired by the player&#39;s spaceship.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        image (pygame.Surface): The image of the bullet.</span>
+<span class="sd">        rect (pygame.Rect): The rectangular bounding box of the bullet.</span>
+<span class="sd">        alien_group (pygame.sprite.Group): Group containing aliens.</span>
+<span class="sd">        explosion_group (pygame.sprite.Group): Group containing explosions.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        __init__(self, x: int, y: int, alien_group: pygame.sprite.Group, explosion_group: pygame.sprite.Group) -&gt; None:</span>
+<span class="sd">            Initialize a bullet.</span>
+
+<span class="sd">        _movement(self) -&gt; None:</span>
+<span class="sd">            Move the bullet upward.</span>
+
+<span class="sd">        _collision(self) -&gt; None:</span>
+<span class="sd">            Check for collision with aliens and handle collisions.</span>
+
+<span class="sd">        update(self) -&gt; None:</span>
+<span class="sd">            Update the bullet&#39;s movement and collision detection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">alien_group</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
+        <span class="n">explosion_group</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a bullet.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): The x-coordinate of the bullet&#39;s initial position.</span>
+<span class="sd">            y (int): The y-coordinate of the bullet&#39;s initial position.</span>
+<span class="sd">            alien_group (pygame.sprite.Group): Group containing aliens.</span>
+<span class="sd">            explosion_group (pygame.sprite.Group): Group containing explosions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;player_sprites&#39;</span><span class="p">,</span> <span class="s1">&#39;player_bullet.png&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span> <span class="o">=</span> <span class="n">alien_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span> <span class="o">=</span> <span class="n">explosion_group</span>
+
+<div class="viewcode-block" id="Bullet._movement"><a class="viewcode-back" href="../../source.html#source.classes.Bullet._movement">[docs]</a>    <span class="k">def</span> <span class="nf">_movement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move the bullet upward.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">constants</span><span class="o">.</span><span class="n">PLAYER_BULLET_SPEED</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Bullet._collision"><a class="viewcode-back" href="../../source.html#source.classes.Bullet._collision">[docs]</a>    <span class="k">def</span> <span class="nf">_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check for collision with aliens and handle collisions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">spritecollide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+            <span class="n">explosion</span> <span class="o">=</span> <span class="n">Explosion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centerx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centery</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">explosion</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bullet.update"><a class="viewcode-back" href="../../source.html#source.classes.Bullet.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update method for the Bullet class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_movement</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collision</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="Alien"><a class="viewcode-back" href="../../source.html#source.classes.Alien">[docs]</a><span class="k">class</span> <span class="nc">Alien</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an alien enemy in the game.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        image (pygame.Surface): The image of the alien.</span>
+<span class="sd">        rect (pygame.Rect): The rectangular bounding box of the alien.</span>
+<span class="sd">        move_counter (int): Counter for movement to control direction change.</span>
+<span class="sd">        move_direction (int): Direction of alien movement (1 for right, -1 for left).</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        __init__(self, x: int, y: int) -&gt; None:</span>
+<span class="sd">            Initialize an alien.</span>
+
+<span class="sd">        _movement(self) -&gt; None:</span>
+<span class="sd">            Move the alien horizontally with periodic direction change.</span>
+
+<span class="sd">        update(self) -&gt; None:</span>
+<span class="sd">            Update the alien&#39;s movement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize an alien.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): The x-coordinate of the alien&#39;s initial position.</span>
+<span class="sd">            y (int): The y-coordinate of the alien&#39;s initial position.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">random_choice</span> <span class="o">=</span> <span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;enemy_sprites&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;enemy</span><span class="si">{</span><span class="n">random_choice</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move_direction</span> <span class="o">=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="Alien._movement"><a class="viewcode-back" href="../../source.html#source.classes.Alien._movement">[docs]</a>    <span class="k">def</span> <span class="nf">_movement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move the alien horizontally with periodic direction change.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_direction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">move_counter</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">75</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">move_direction</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">move_counter</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_direction</span></div>
+
+<div class="viewcode-block" id="Alien.update"><a class="viewcode-back" href="../../source.html#source.classes.Alien.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update method for the Alien class.</span>
+<span class="sd">        :noindex:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_movement</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="AlienBullet"><a class="viewcode-back" href="../../source.html#source.classes.AlienBullet">[docs]</a><span class="k">class</span> <span class="nc">AlienBullet</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a bullet fired by an alien enemy.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        image (pygame.Surface): The image of the alien bullet.</span>
+<span class="sd">        rect (pygame.Rect): The rectangular bounding box of the alien bullet.</span>
+<span class="sd">        spaceship_group (pygame.sprite.Group): Group containing the player&#39;s spaceship.</span>
+<span class="sd">        explosion_group (pygame.sprite.Group): Group containing explosions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">spaceship_group</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
+        <span class="n">explosion_group</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize an alien bullet.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): The x-coordinate of the bullet&#39;s initial position.</span>
+<span class="sd">            y (int): The y-coordinate of the bullet&#39;s initial position.</span>
+<span class="sd">            spaceship_group (pygame.sprite.Group): Group containing the player&#39;s spaceship.</span>
+<span class="sd">            explosion_group (pygame.sprite.Group): Group containing explosions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;enemy_sprites&#39;</span><span class="p">,</span> <span class="s1">&#39;enemy_bullet.png&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaceship_group</span> <span class="o">=</span> <span class="n">spaceship_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span> <span class="o">=</span> <span class="n">explosion_group</span>
+
+    <span class="k">def</span> <span class="nf">_movement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move the alien bullet downward.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">constants</span><span class="o">.</span><span class="n">ENEMY_BULLET_SPEED</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">bottom</span> <span class="o">&gt;</span> <span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span> <span class="o">+</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check for collision with the spaceship and handle collisions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">spritecollide</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaceship_group</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">collide_mask</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+            <span class="n">spaceship</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaceship_group</span><span class="o">.</span><span class="n">sprites</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">spaceship</span><span class="o">.</span><span class="n">health_remaining</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">explosion</span> <span class="o">=</span> <span class="n">Explosion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centerx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centery</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">explosion</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AlienBullet.update"><a class="viewcode-back" href="../../source.html#source.classes.AlienBullet.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the alien bullet&#39;s movement and collision detection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_movement</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collision</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="Explosion"><a class="viewcode-back" href="../../source.html#source.classes.Explosion">[docs]</a><span class="k">class</span> <span class="nc">Explosion</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an explosion animation in the game.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        images (list): List of explosion animation frames.</span>
+<span class="sd">        index (int): Current frame index of the explosion animation.</span>
+<span class="sd">        image (pygame.Surface): The current frame image.</span>
+<span class="sd">        rect (pygame.Rect): The rectangular bounding box of the explosion animation.</span>
+<span class="sd">        counter (int): Counter for frame update timing.</span>
+<span class="sd">        sound (pygame.mixer.Sound): The sound effect associated with the explosion.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        __init__(self, x: int, y: int, size: int) -&gt; None:</span>
+<span class="sd">            Initialize an explosion animation.</span>
+
+<span class="sd">        update(self) -&gt; None:</span>
+<span class="sd">            Update the explosion animation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize an explosion animation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): The x-coordinate of the explosion&#39;s center.</span>
+<span class="sd">            y (int): The y-coordinate of the explosion&#39;s center.</span>
+<span class="sd">            size (int): The size of the explosion (1, 2, or 3).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+            <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;effects&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;exp</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+            <span class="c1"># Scale the image based on the &#39;size&#39; parameter</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;sounds&#39;</span><span class="p">,</span> <span class="s1">&#39;explosion.wav&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Sound</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Explosion.update"><a class="viewcode-back" href="../../source.html#source.classes.Explosion.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the Explosion class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">&gt;=</span> <span class="n">constants</span><span class="o">.</span><span class="n">EXPLOSION_SPEED</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">&gt;=</span> <span class="n">constants</span><span class="o">.</span><span class="n">EXPLOSION_SPEED</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="SpaceInvadersGame"><a class="viewcode-back" href="../../source.html#source.classes.SpaceInvadersGame">[docs]</a><span class="k">class</span> <span class="nc">SpaceInvadersGame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the state and main game logic for Space Invaders.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        screen (pygame.Surface): The game display surface.</span>
+<span class="sd">        clock (pygame.time.Clock): The game clock for controlling frame rate.</span>
+<span class="sd">        countdown (int): Countdown timer at the start of the game.</span>
+<span class="sd">        last_count (int): Timestamp for the last countdown update.</span>
+<span class="sd">        last_alien_shot (int): Timestamp for the last alien shot.</span>
+<span class="sd">        spaceship_group (pygame.sprite.GroupSingle): Group containing the player&#39;s spaceship.</span>
+<span class="sd">        bullet_group (pygame.sprite.Group): Group containing player bullets.</span>
+<span class="sd">        alien_group (pygame.sprite.Group): Group containing alien enemies.</span>
+<span class="sd">        alien_bullet_group (pygame.sprite.Group): Group containing alien bullets.</span>
+<span class="sd">        explosion_group (pygame.sprite.Group): Group containing explosion animations.</span>
+<span class="sd">        spaceship (Spaceship): The player&#39;s spaceship.</span>
+<span class="sd">        game_over (int): Flag indicating the game&#39;s state (0 for ongoing, 1 for win, -1 for loss).</span>
+<span class="sd">        end_timer (int): Timestamp for the game ending timer.</span>
+<span class="sd">        ending_music (bool): Flag to control ending music playback.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Space Invaders game.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize display</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Space Invaders&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+        <span class="c1"># Load the image</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;effects&#39;</span><span class="p">,</span> <span class="s1">&#39;background.png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BACKGROUND</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+        <span class="c1"># Loading fonts</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;fonts&#39;</span><span class="p">,</span> <span class="s1">&#39;font.ttf&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">FONT_40</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+        <span class="c1"># Game variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">countdown</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">GAME_COOLDOWN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_timer</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_count</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_alien_shot</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ending_music</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Create sprite groups</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaceship_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">GroupSingle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bullet_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alien_bullet_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+
+        <span class="c1"># Create player</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaceship</span> <span class="o">=</span> <span class="n">Spaceship</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">5</span><span class="p">),</span>
+            <span class="mi">3</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bullet_group</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Add spaceship to group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaceship_group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaceship</span><span class="p">)</span>
+
+        <span class="c1"># Spawn enemies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spawn_aliens</span><span class="p">()</span>
+
+        <span class="c1"># start main music</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="s1">&#39;sounds/background_music.wav&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_spawn_aliens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Spawn the initial alien enemies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">ROW_OF_ENEMIES</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">COLUMN_OF_ENEMIES</span><span class="p">):</span>
+                <span class="n">alien</span> <span class="o">=</span> <span class="n">Alien</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="n">item</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="n">row</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">alien</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_draw_bg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draw the game background.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BACKGROUND</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_draw_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">text_col</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draw text on the game screen.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): The text to display.</span>
+<span class="sd">            font (pygame.font.Font): The font to use for the text.</span>
+<span class="sd">            text_col (tuple): The color of the text.</span>
+<span class="sd">            x (int): The x-coordinate of the text.</span>
+<span class="sd">            y (int): The y-coordinate of the text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">text_col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_play_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sound</span><span class="p">):</span>
+        <span class="c1"># Construct the relative path to the sound file</span>
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">sound_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="n">sound</span><span class="p">)</span>
+
+        <span class="c1"># Load and play the sound</span>
+        <span class="n">sound_temp</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Sound</span><span class="p">(</span><span class="n">sound_path</span><span class="p">)</span>
+        <span class="n">sound_temp</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">sound_temp</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SpaceInvadersGame.play_step"><a class="viewcode-back" href="../../source.html#source.classes.SpaceInvadersGame.play_step">[docs]</a>    <span class="k">def</span> <span class="nf">play_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute a single game step.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the game is over, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Display background</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_draw_bg</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaceship_group</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bullet_group</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alien_bullet_group</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="c1"># Event handler</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span><span class="p">:</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+                <span class="n">quit</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">countdown</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">aliens_left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="p">)</span>
+
+            <span class="c1"># Update spaceship and game elements</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spaceship</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bullet_group</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alien_bullet_group</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+            <span class="c1"># Alien&#39;s shooting</span>
+            <span class="n">time_now</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">aliens_left</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaceship</span><span class="o">.</span><span class="n">health_remaining</span> <span class="ow">and</span> <span class="p">(</span><span class="n">time_now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_alien_shot</span> <span class="o">&gt;</span> <span class="n">constants</span><span class="o">.</span><span class="n">ALIEN_COOLDOWN</span><span class="p">):</span>
+                <span class="n">attacking_alien</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alien_group</span><span class="o">.</span><span class="n">sprites</span><span class="p">())</span>
+                <span class="n">alien_bullet</span> <span class="o">=</span> <span class="n">AlienBullet</span><span class="p">(</span>
+                    <span class="n">attacking_alien</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centerx</span><span class="p">,</span>
+                    <span class="n">attacking_alien</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">spaceship_group</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">explosion_group</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="s1">&#39;sounds/enemy_shot.wav&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">alien_bullet_group</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">alien_bullet</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last_alien_shot</span> <span class="o">=</span> <span class="n">time_now</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Ending the game if all enemies are dead</span>
+                <span class="k">if</span> <span class="n">aliens_left</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ending_music</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="s1">&#39;sounds/win.wav&#39;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ending_music</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_draw_text</span><span class="p">(</span>
+                        <span class="s2">&quot;YOU WIN!&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">FONT_40</span><span class="p">,</span>
+                        <span class="n">constants</span><span class="o">.</span><span class="n">WHITE</span><span class="p">,</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">110</span><span class="p">),</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">50</span><span class="p">),</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaceship</span><span class="o">.</span><span class="n">health_remaining</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ending_music</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="s1">&#39;sounds/loss.wav&#39;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ending_music</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_draw_text</span><span class="p">(</span>
+                        <span class="s2">&quot;GAME OVER!&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">FONT_40</span><span class="p">,</span>
+                        <span class="n">constants</span><span class="o">.</span><span class="n">WHITE</span><span class="p">,</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">110</span><span class="p">),</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">50</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_timer</span> <span class="o">&gt;</span> <span class="mi">3000</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_draw_text</span><span class="p">(</span>
+                <span class="s2">&quot;GET READY!&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">FONT_40</span><span class="p">,</span>
+                <span class="n">constants</span><span class="o">.</span><span class="n">WHITE</span><span class="p">,</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">110</span><span class="p">),</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">50</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_draw_text</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">countdown</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">FONT_40</span><span class="p">,</span>
+                <span class="n">constants</span><span class="o">.</span><span class="n">WHITE</span><span class="p">,</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">10</span><span class="p">),</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">100</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">count_timer</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">count_timer</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_count</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">countdown</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last_count</span> <span class="o">=</span> <span class="n">count_timer</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_timer</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">get_ticks</span><span class="p">()</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">FPS</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Muchal Szynkaruk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

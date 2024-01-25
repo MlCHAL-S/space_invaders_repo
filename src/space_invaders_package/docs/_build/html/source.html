@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>source package &mdash; Space Invaders 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tests package" href="tests.html" />
+    <link rel="prev" title="main module" href="main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Space Invaders
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">SpaceInvaders</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">source package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-source.classes">source.classes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-source.constants">source.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-source">Module contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#space-invaders-game-package">Space Invaders Game Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules">Modules:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Space Invaders</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">SpaceInvaders</a></li>
+      <li class="breadcrumb-item active">source package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/source.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="source-package">
+<h1>source package<a class="headerlink" href="#source-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-source.classes">
+<span id="source-classes-module"></span><h2>source.classes module<a class="headerlink" href="#module-source.classes" title="Permalink to this heading"></a></h2>
+<p>Space Invaders Game Implementation using Pygame</p>
+<p>This script is an implementation of the classic arcade game ‘Space Invaders’ using the Pygame library. The game features a spaceship controlled by the player, whose objective is to defeat waves of incoming alien enemies by shooting them while avoiding their attacks. The game ends when the player either destroys all aliens or loses all health from alien attacks.</p>
+<p>Key Features:
+- Player-controlled spaceship with movement and shooting capabilities.
+- Alien enemies with simple AI for movement and attacking the player.
+- Collision detection for bullets impacting aliens and the player’s spaceship.
+- Explosions animations for visual feedback upon destruction of aliens or the player’s spaceship.
+- Countdown before the game starts and display messages for game over conditions.
+- Background music and sound effects for a more immersive gaming experience.</p>
+<p>Classes:
+- Spaceship: Manages the player’s spaceship, including its movement, shooting, and health.
+- Bullet: Handles the bullets fired by the spaceship, their movement, and collision with aliens.
+- Alien: Represents the alien enemies with their own movement patterns and shooting behavior.
+- AlienBullet: Similar to Bullet, but represents bullets fired by aliens.
+- Explosion: Manages explosion animations triggered by collisions.
+- SpaceInvadersGame: The main game class that initializes the game, manages game states, and contains the main game loop.</p>
+<p>This script exemplifies object-oriented programming in Python and demonstrates the use of the Pygame library for 2D game development.</p>
+<p>Usage:
+Player can control the spaceship using keyboard inputs and aim to destroy all alien enemies.</p>
+<p>Dependencies:
+- pygame: A popular Python library for writing video games.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="source.classes.Alien">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">source.classes.</span></span><span class="sig-name descname"><span class="pre">Alien</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/classes.html#Alien"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Alien" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sprite</span></code></p>
+<p>Represents an alien enemy in the game.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>pygame.Surface</em>) – The image of the alien.</p></li>
+<li><p><strong>rect</strong> (<em>pygame.Rect</em>) – The rectangular bounding box of the alien.</p></li>
+<li><p><strong>move_counter</strong> (<em>int</em>) – Counter for movement to control direction change.</p></li>
+<li><p><strong>move_direction</strong> (<em>int</em>) – Direction of alien movement (1 for right, -1 for left).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__(self,</span> <span class="pre">x</span></span></dt>
+<dd><p>int, y: int) -&gt; None:
+Initialize an alien.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.Alien._movement">
+<span class="sig-name descname"><span class="pre">_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Alien._movement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Alien._movement" title="Permalink to this definition"></a></dt>
+<dd><p>Move the alien horizontally with periodic direction change.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.Alien.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Alien.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Alien.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the alien’s movement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Alien.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd><p>Update method for the Alien class.
+:noindex:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="source.classes.AlienBullet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">source.classes.</span></span><span class="sig-name descname"><span class="pre">AlienBullet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spaceship_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explosion_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/classes.html#AlienBullet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.AlienBullet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sprite</span></code></p>
+<p>Represents a bullet fired by an alien enemy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>pygame.Surface</em>) – The image of the alien bullet.</p></li>
+<li><p><strong>rect</strong> (<em>pygame.Rect</em>) – The rectangular bounding box of the alien bullet.</p></li>
+<li><p><strong>spaceship_group</strong> (<em>pygame.sprite.Group</em>) – Group containing the player’s spaceship.</p></li>
+<li><p><strong>explosion_group</strong> (<em>pygame.sprite.Group</em>) – Group containing explosions.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.AlienBullet.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#AlienBullet.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.AlienBullet.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the alien bullet’s movement and collision detection.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="source.classes.Bullet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">source.classes.</span></span><span class="sig-name descname"><span class="pre">Bullet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alien_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explosion_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/classes.html#Bullet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Bullet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sprite</span></code></p>
+<p>Represents a bullet fired by the player’s spaceship.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>pygame.Surface</em>) – The image of the bullet.</p></li>
+<li><p><strong>rect</strong> (<em>pygame.Rect</em>) – The rectangular bounding box of the bullet.</p></li>
+<li><p><strong>alien_group</strong> (<em>pygame.sprite.Group</em>) – Group containing aliens.</p></li>
+<li><p><strong>explosion_group</strong> (<em>pygame.sprite.Group</em>) – Group containing explosions.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__(self,</span> <span class="pre">x</span></span></dt>
+<dd><p>int, y: int, alien_group: pygame.sprite.Group, explosion_group: pygame.sprite.Group) -&gt; None:
+Initialize a bullet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.Bullet._movement">
+<span class="sig-name descname"><span class="pre">_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Bullet._movement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Bullet._movement" title="Permalink to this definition"></a></dt>
+<dd><p>Move the bullet upward.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.Bullet._collision">
+<span class="sig-name descname"><span class="pre">_collision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Bullet._collision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Bullet._collision" title="Permalink to this definition"></a></dt>
+<dd><p>Check for collision with aliens and handle collisions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.Bullet.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Bullet.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Bullet.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the bullet’s movement and collision detection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Bullet.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Permalink to this definition"></a></dt>
+<dd><p>Update method for the Bullet class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="source.classes.Explosion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">source.classes.</span></span><span class="sig-name descname"><span class="pre">Explosion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/classes.html#Explosion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Explosion" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sprite</span></code></p>
+<p>Represents an explosion animation in the game.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>list</em>) – List of explosion animation frames.</p></li>
+<li><p><strong>index</strong> (<em>int</em>) – Current frame index of the explosion animation.</p></li>
+<li><p><strong>image</strong> (<em>pygame.Surface</em>) – The current frame image.</p></li>
+<li><p><strong>rect</strong> (<em>pygame.Rect</em>) – The rectangular bounding box of the explosion animation.</p></li>
+<li><p><strong>counter</strong> (<em>int</em>) – Counter for frame update timing.</p></li>
+<li><p><strong>sound</strong> (<em>pygame.mixer.Sound</em>) – The sound effect associated with the explosion.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__(self,</span> <span class="pre">x</span></span></dt>
+<dd><p>int, y: int, size: int) -&gt; None:
+Initialize an explosion animation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.Explosion.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Explosion.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Explosion.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the explosion animation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Explosion.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Permalink to this definition"></a></dt>
+<dd><p>Update the Explosion class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="source.classes.SpaceInvadersGame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">source.classes.</span></span><span class="sig-name descname"><span class="pre">SpaceInvadersGame</span></span><a class="reference internal" href="_modules/source/classes.html#SpaceInvadersGame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.SpaceInvadersGame" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents the state and main game logic for Space Invaders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>screen</strong> (<em>pygame.Surface</em>) – The game display surface.</p></li>
+<li><p><strong>clock</strong> (<em>pygame.time.Clock</em>) – The game clock for controlling frame rate.</p></li>
+<li><p><strong>countdown</strong> (<em>int</em>) – Countdown timer at the start of the game.</p></li>
+<li><p><strong>last_count</strong> (<em>int</em>) – Timestamp for the last countdown update.</p></li>
+<li><p><strong>last_alien_shot</strong> (<em>int</em>) – Timestamp for the last alien shot.</p></li>
+<li><p><strong>spaceship_group</strong> (<em>pygame.sprite.GroupSingle</em>) – Group containing the player’s spaceship.</p></li>
+<li><p><strong>bullet_group</strong> (<em>pygame.sprite.Group</em>) – Group containing player bullets.</p></li>
+<li><p><strong>alien_group</strong> (<em>pygame.sprite.Group</em>) – Group containing alien enemies.</p></li>
+<li><p><strong>alien_bullet_group</strong> (<em>pygame.sprite.Group</em>) – Group containing alien bullets.</p></li>
+<li><p><strong>explosion_group</strong> (<em>pygame.sprite.Group</em>) – Group containing explosion animations.</p></li>
+<li><p><strong>spaceship</strong> (<a class="reference internal" href="#source.classes.Spaceship" title="source.classes.Spaceship"><em>Spaceship</em></a>) – The player’s spaceship.</p></li>
+<li><p><strong>game_over</strong> (<em>int</em>) – Flag indicating the game’s state (0 for ongoing, 1 for win, -1 for loss).</p></li>
+<li><p><strong>end_timer</strong> (<em>int</em>) – Timestamp for the game ending timer.</p></li>
+<li><p><strong>ending_music</strong> (<em>bool</em>) – Flag to control ending music playback.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.SpaceInvadersGame.play_step">
+<span class="sig-name descname"><span class="pre">play_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/classes.html#SpaceInvadersGame.play_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.SpaceInvadersGame.play_step" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a single game step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the game is over, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="source.classes.Spaceship">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">source.classes.</span></span><span class="sig-name descname"><span class="pre">Spaceship</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">health</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bullet_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alien_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explosion_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/classes.html#Spaceship"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Spaceship" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sprite</span></code></p>
+<p>Represents a spaceship in the Space Invaders game.</p>
+<p>This class manages the behavior and parameters of the player’s spaceship,
+including movement, shooting, health management, and collision detection.</p>
+<dl class="simple">
+<dt>image<span class="classifier">pygame.Surface</span></dt><dd><p>The image of the spaceship.</p>
+</dd>
+<dt>rect<span class="classifier">pygame.Rect</span></dt><dd><p>The rectangular bounding box of the spaceship.</p>
+</dd>
+<dt>health_start<span class="classifier">int</span></dt><dd><p>The initial health of the spaceship.</p>
+</dd>
+<dt>health_remaining<span class="classifier">int</span></dt><dd><p>The current health of the spaceship.</p>
+</dd>
+<dt>last_shot<span class="classifier">int</span></dt><dd><p>The timestamp of the last shot fired from the spaceship.</p>
+</dd>
+<dt>screen<span class="classifier">pygame.Surface</span></dt><dd><p>The game screen surface.</p>
+</dd>
+<dt>bullet_group<span class="classifier">pygame.sprite.Group</span></dt><dd><p>Group containing bullets.</p>
+</dd>
+<dt>alien_group<span class="classifier">pygame.sprite.Group</span></dt><dd><p>Group containing aliens.</p>
+</dd>
+<dt>explosion_group<span class="classifier">pygame.sprite.Group</span></dt><dd><p>Group containing explosions.</p>
+</dd>
+<dt>explosion_created<span class="classifier">bool</span></dt><dd><p>Flag indicating if an explosion has been created.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>__init__(self, x, y, health, screen, bullet_group, alien_group, explosion_group)</dt><dd><p>Initialize the spaceship with position, health, and related groups.</p>
+</dd>
+<dt>_move(self)</dt><dd><p>Move the spaceship based on user input.</p>
+</dd>
+<dt>_shoot(self)</dt><dd><p>Shoot a bullet from the spaceship and handle the explosion animation.</p>
+</dd>
+<dt>_play_sound(self, sound)</dt><dd><p>Play a sound effect.</p>
+</dd>
+<dt>_update_mask(self)</dt><dd><p>Update the mask for collision detection.</p>
+</dd>
+<dt>_update_health_bar(self)</dt><dd><p>Update the health bar of the spaceship.</p>
+</dd>
+<dt>update(self)</dt><dd><p>Update the spaceship’s position, shooting, mask, health, and health bar.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.classes.Spaceship.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/source/classes.html#Spaceship.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.classes.Spaceship.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the spaceship’s position, shooting, mask, health, and health bar.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-source.constants">
+<span id="source-constants-module"></span><h2>source.constants module<a class="headerlink" href="#module-source.constants" title="Permalink to this heading"></a></h2>
+<p>Constants for Space Invaders Game</p>
+<p>This module defines a collection of constants used in the Space Invaders game implemented using Pygame.
+These constants are used for setting up the game’s display properties, defining gameplay mechanics,
+and initializing key game attributes. This centralization of constants ensures consistency and ease
+of modifications throughout the game’s codebase.</p>
+<p>Imports:
+- pygame: A Python library for creating video games.</p>
+</section>
+<section id="module-source">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-source" title="Permalink to this heading"></a></h2>
+<section id="space-invaders-game-package">
+<h3>Space Invaders Game Package<a class="headerlink" href="#space-invaders-game-package" title="Permalink to this heading"></a></h3>
+<p>This package contains the implementation of a Space Invaders-style game using Pygame.
+It is structured into modular components, each handling different aspects of the game’s functionality.
+The package is designed with object-oriented principles, allowing for clear separation of concerns and
+ease of future enhancements.</p>
+</section>
+<section id="modules">
+<h3>Modules:<a class="headerlink" href="#modules" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>constants</dt><dd><p>Defines all the constants used throughout the game, including screen dimensions,
+color definitions, gameplay settings, and more.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>classes</dt><dd><p>Contains the classes that represent the different entities in the game such as the player’s spaceship,
+aliens, bullets, and explosions. It also includes the main game class that orchestrates the game loop and logic.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="usage">
+<h3>Usage:<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h3>
+<p>To run the game, ensure that Pygame is installed and execute the main game script.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="main.html" class="btn btn-neutral float-left" title="main module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="tests package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Muchal Szynkaruk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
