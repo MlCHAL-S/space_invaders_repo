@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "space_invaders_package"
 version = "0.1"
 authors = [
-  { name="Michal Szynkaruk", email="m.szynkaruk@student.uksw.edu.pl" },
+  { name = "Michal Szynkaruk" }
 ]
 description = "Final project"
 readme = "README.md"
@@ -18,7 +18,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/MlCHAL-S/Space_invaders"
+Homepage = "https://github.com/MlCHAL-S/space_invaders_repo"
 
 [dependencies]
 pygame = "2.1.0"
